@@ -10,6 +10,8 @@ export type TelegramAlertInput = {
   sourceLinks: string[];
   mediaLinks?: string[];
   firstSeenAt?: string;
+  sourceName?: string;
+  publishedAt?: string | null;
   dashboardUrl?: string;
 };
 
@@ -43,26 +45,49 @@ export async function sendTelegramAlert(input: TelegramAlertInput) {
 function formatTelegramAlert(input: TelegramAlertInput) {
   const sources = input.sourceLinks.length
     ? input.sourceLinks.map((link, index) => `${index + 1}. ${escapeHtml(link)}`).join("\n")
-    : "No source links attached.";
-  const media = input.mediaLinks?.length ? `\n\n<b>Media</b>\n${input.mediaLinks.map((link) => escapeHtml(link)).join("\n")}` : "";
-  const dashboard = input.dashboardUrl ? `\n\n<a href="${escapeHtml(input.dashboardUrl)}">Open Rasd dashboard</a>` : "";
+    : "لا توجد روابط مصادر مرفقة.";
+  const media = input.mediaLinks?.length ? `\n\n<b>وسائط</b>\n${input.mediaLinks.map((link) => escapeHtml(link)).join("\n")}` : "";
+  const dashboard = input.dashboardUrl ? `\n\n<a href="${escapeHtml(input.dashboardUrl)}">فتح الخبر في رصد</a>` : "";
+  const published = input.publishedAt ?? input.firstSeenAt;
 
   return [
-    "<b>Rasd Alert</b>",
+    "<b>رصد | عاجل مؤكد</b>",
     "",
     `<b>${escapeHtml(input.headline)}</b>`,
-    `Status: ${escapeHtml(input.verificationStatus)}`,
-    `Confidence: ${input.confidenceScore}%`,
-    `Basis: ${escapeHtml(input.verificationReason)}`,
-    input.firstSeenAt ? `First seen: ${escapeHtml(input.firstSeenAt)}` : "",
+    input.sourceName ? `المصدر: ${escapeHtml(input.sourceName)}` : "",
+    published ? `وقت النشر: ${escapeHtml(formatMakkahTime(published))}` : "",
+    `الحالة: ${escapeHtml(localizeStatus(input.verificationStatus))}`,
+    `درجة الثقة: ${input.confidenceScore}%`,
+    `سبب الاعتماد: ${escapeHtml(input.verificationReason)}`,
     "",
-    "<b>Sources</b>",
+    "<b>روابط المصادر</b>",
     sources,
     media,
     dashboard
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+function localizeStatus(status: string) {
+  const labels: Record<string, string> = {
+    confirmed: "مؤكد",
+    high_confidence: "ثقة عالية",
+    likely: "مرجح",
+    monitoring: "قيد الرصد",
+    unverified: "غير موثق"
+  };
+  return labels[status] ?? status;
+}
+
+function formatMakkahTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("ar-SA", {
+    timeZone: "Asia/Riyadh",
+    dateStyle: "medium",
+    timeStyle: "medium"
+  }).format(date);
 }
 
 function escapeHtml(value: string) {

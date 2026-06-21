@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   return NextResponse.json(
-    { error: "Email alerts are disabled. Use /api/alerts/telegram/test or ingestion-triggered Telegram alerts." },
-    { status: 410 }
+    { message: "Email digests are handled by /api/reports/email-digest and protected with CRON_SECRET." },
+    { status: 200 }
   );
 }

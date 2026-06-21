@@ -12,6 +12,7 @@ import {
   normalizeTopic,
   shouldSendTrustedAlert
 } from "@/lib/verification";
+import { translateNewsItemToArabic, type ArabicNewsTranslation } from "@/lib/translation";
 import type { Source, SourceType, StoryCluster } from "@/types/app";
 
 const parser = new Parser();
@@ -20,6 +21,10 @@ type IngestedArticle = {
   id: string;
   title: string;
   url: string;
+  title_ar: string | null;
+  excerpt_ar: string | null;
+  translation_status: "pending" | "ready" | "failed";
+  published_at: string | null;
 };
 
 type ClusterSourceRow = {
@@ -94,6 +99,13 @@ async function ingestSource(source: Source) {
       ...(importanceScore >= 82 ? await fetchOpenGraphMedia(canonicalUrl) : [])
     ];
 
+    const translation = await translateNewsItemToArabic({
+      title,
+      content: rawContent,
+      sourceName: source.name,
+      sourceLanguage: source.language
+    });
+
     const article = await upsertArticle({
       source,
       title,
@@ -102,12 +114,13 @@ async function ingestSource(source: Source) {
       publishedAt,
       rawContent,
       contentHash,
-      sourceItemId: item.guid ?? item.id ?? itemUrl
+      sourceItemId: item.guid ?? item.id ?? itemUrl,
+      translation
     });
     if (!article) continue;
 
     insertedArticles += 1;
-    const cluster = await upsertCluster(article, source, rawContent, importanceScore);
+    const cluster = await upsertCluster(article, source, rawContent, importanceScore, translation);
     if (!cluster) continue;
     updatedClusters += 1;
 
@@ -139,6 +152,7 @@ async function upsertArticle(input: {
   rawContent: string;
   contentHash: string;
   sourceItemId: string;
+  translation: { status: "ready" | "failed"; translation: ArabicNewsTranslation | null; reason?: string };
 }): Promise<IngestedArticle | null> {
   const supabase = createSupabaseServiceClient();
   const existingByUrl = await supabase.from("raw_articles").select("id,title,url").eq("url", input.url).maybeSingle();
@@ -156,21 +170,30 @@ async function upsertArticle(input: {
     published_at: input.publishedAt,
     raw_content: input.rawContent,
     excerpt: input.rawContent.slice(0, 400),
+    title_ar: input.translation.translation?.title ?? null,
+    excerpt_ar: input.translation.translation?.excerpt ?? null,
+    translation_status: input.translation.status,
     language: input.source.language,
     detected_entities: {},
     content_hash: input.contentHash
   };
 
   if (existing?.id) {
-    const { data } = await supabase.from("raw_articles").update(payload).eq("id", existing.id).select("id,title,url").single();
+    const { data } = await supabase.from("raw_articles").update(payload).eq("id", existing.id).select("id,title,url,title_ar,excerpt_ar,translation_status,published_at").single();
     return data;
   }
 
-  const { data } = await supabase.from("raw_articles").insert(payload).select("id,title,url").single();
+  const { data } = await supabase.from("raw_articles").insert(payload).select("id,title,url,title_ar,excerpt_ar,translation_status,published_at").single();
   return data;
 }
 
-async function upsertCluster(article: IngestedArticle, source: Source, rawContent: string, importanceScore: number) {
+async function upsertCluster(
+  article: IngestedArticle,
+  source: Source,
+  rawContent: string,
+  importanceScore: number,
+  translation: { status: "ready" | "failed"; translation: ArabicNewsTranslation | null; reason?: string }
+) {
   const supabase = createSupabaseServiceClient();
   const topic = normalizeTopic(`${article.title} ${safeHostname(article.url)}`);
   const topicTags = detectTopicTags(`${article.title} ${rawContent}`);
@@ -185,7 +208,15 @@ async function upsertCluster(article: IngestedArticle, source: Source, rawConten
     importance_score: Math.max(existingCluster?.importance_score ?? 0, importanceScore),
     verification_status: verification.status,
     confidence_score: verification.confidenceScore,
-    verification_reason: verification.reason,
+    verification_reason: translation.status === "ready" ? verification.reason : `تعذر تجهيز صياغة عربية لهذا الخبر: ${translation.reason ?? "خطأ ترجمة غير معروف"}`,
+    arabic_title: translation.translation?.title ?? existingCluster?.arabic_title ?? null,
+    arabic_excerpt: translation.translation?.excerpt ?? existingCluster?.arabic_excerpt ?? null,
+    arabic_bullets: translation.translation?.bullets ?? existingCluster?.arabic_bullets ?? [],
+    translation_status: translation.status,
+    primary_source_name: source.name,
+    primary_source_url: article.url,
+    primary_published_at: article.published_at,
+    primary_article_id: article.id,
     topic_tags: mergeTags(existingCluster?.topic_tags as string[] | null, topicTags),
     region_tags: mergeTags(existingCluster?.region_tags as string[] | null, regionTags),
     source_count: existingCluster?.source_count ?? 1,
@@ -243,14 +274,16 @@ async function refreshClusterVerification(clusterId: string) {
 }
 
 async function maybeSendTrustedTelegramAlert(cluster: StoryCluster) {
+  if (cluster.translation_status !== "ready" || !cluster.arabic_title) return false;
+
   const supabase = createSupabaseServiceClient();
   const { data: sourceRows } = await supabase
     .from("cluster_sources")
-    .select("raw_articles(url), sources(source_type)")
+    .select("raw_articles(url,published_at), sources(source_type,name)")
     .eq("cluster_id", cluster.id);
   const rows = (sourceRows ?? []) as unknown as Array<{
-    raw_articles?: { url: string } | null;
-    sources?: { source_type: SourceType } | null;
+    raw_articles?: { url: string; published_at?: string | null } | null;
+    sources?: { source_type: SourceType; name?: string | null } | null;
   }>;
   const sourceTypes = rows.map((row) => row.sources?.source_type).filter(Boolean) as SourceType[];
 
@@ -271,13 +304,15 @@ async function maybeSendTrustedTelegramAlert(cluster: StoryCluster) {
 
   try {
     await sendTelegramAlert({
-      headline: cluster.main_title,
+      headline: cluster.arabic_title,
       verificationStatus: cluster.verification_status,
       confidenceScore: cluster.confidence_score,
       verificationReason: cluster.verification_reason,
       sourceLinks,
       mediaLinks,
-      firstSeenAt: cluster.first_seen_at,
+      firstSeenAt: cluster.primary_published_at ?? cluster.first_seen_at,
+      sourceName: cluster.primary_source_name ?? rows[0]?.sources?.name ?? undefined,
+      publishedAt: cluster.primary_published_at ?? rows[0]?.raw_articles?.published_at ?? cluster.first_seen_at,
       dashboardUrl: serverEnv.APP_BASE_URL ? `${serverEnv.APP_BASE_URL}/ar/dashboard/story/${cluster.id}` : undefined
     });
 

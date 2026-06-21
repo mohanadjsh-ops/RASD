@@ -10,10 +10,12 @@ export async function POST() {
   if (!limited.ok) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
   const result = await sendTelegramAlert({
-    headline: "اختبار تنبيه رصد عبر تيليغرام يعمل وفق الإعدادات الحالية بنجاح الآن",
+    headline: "اختبار تنبيه رصد عبر تيليغرام يعمل وفق الإعدادات الحالية بنجاح",
     verificationStatus: "test",
     confidenceScore: 100,
-    verificationReason: "This is a manual Telegram test from the Rasd admin dashboard.",
+    verificationReason: "اختبار يدوي من لوحة إدارة رصد.",
+    sourceName: "Rasd",
+    publishedAt: new Date().toISOString(),
     sourceLinks: ["https://telegram.org"]
   });
 

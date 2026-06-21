@@ -4,6 +4,7 @@
   "email": "Email",
   "password": "Password",
   "signIn": "Sign in",
+  "keepSignedIn": "Keep me signed in",
   "dashboard": "Dashboard",
   "breakingNews": "Breaking news",
   "sources": "Sources",
@@ -20,11 +21,13 @@
   "overview": "Overview",
   "latestStories": "Latest monitored stories",
   "highConfidence": "High confidence",
+  "confirmed": "Confirmed",
   "monitoring": "Monitoring",
   "recentAlerts": "Recent alerts",
   "runFetch": "Run fetch now",
   "search": "Search",
   "status": "Status",
+  "allStatuses": "All statuses",
   "category": "Category",
   "language": "Language",
   "confidence": "Confidence",
@@ -34,6 +37,8 @@
   "firstSeen": "First seen",
   "lastUpdated": "Last updated",
   "save": "Save",
+  "saved": "Saved",
+  "send": "Send",
   "generate": "Generate",
   "copy": "Copy",
   "comingLater": "coming later",
@@ -48,26 +53,36 @@
   "caption": "Social caption",
   "keyPoints": "Key points",
   "verificationNote": "Verification note",
-  "riskFlags": "Risk flags"
-  ,"headerStatus": "Trusted newsroom"
-  ,"sourceBasedMonitoring": "Source-based monitoring, transparent confidence scoring, private alerts."
-  ,"openNewsroom": "Open newsroom"
-  ,"sourcesCount": "Sources"
-  ,"addSource": "Add source"
-  ,"enabled": "Enabled"
-  ,"disabled": "Disabled"
-  ,"media": "Media"
-  ,"emailAlerts": "Email alerts"
-  ,"emailAlertsDisabled": "Email alerts disabled"
-  ,"keywords": "Keywords"
-  ,"minimumConfidence": "Minimum confidence"
-  ,"telegramAlerts": "Telegram alerts"
-  ,"channel": "Channel"
-  ,"sentTo": "Sent to"
-  ,"createdAt": "Created at"
-  ,"entityType": "Entity type"
-  ,"entityId": "Entity ID"
-  ,"openChatgptRoom": "Open ChatGPT room"
-  ,"chatgptRoomTitle": "ChatGPT room"
-  ,"chatgptRoomNote": "Use the linked ChatGPT room as the primary editing space, with the fields below kept as an in-system drafting aid."
+  "riskFlags": "Risk flags",
+  "headerStatus": "Trusted newsroom",
+  "sourceBasedMonitoring": "Immediate trusted-source monitoring, Arabic translation, and direct alerts.",
+  "openNewsroom": "Open newsroom",
+  "sourcesCount": "Sources",
+  "addSource": "Add source",
+  "sourceName": "Source name",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "media": "Media",
+  "emailAlerts": "Email alerts",
+  "enableEmailAlerts": "Enable email digests",
+  "emailAlertsDisabled": "Email alerts disabled",
+  "keywords": "Keywords",
+  "minimumConfidence": "Minimum confidence",
+  "telegramAlerts": "Telegram alerts",
+  "channel": "Channel",
+  "sentTo": "Sent to",
+  "createdAt": "Created at",
+  "entityType": "Entity type",
+  "entityId": "Entity ID",
+  "openChatgptRoom": "Open external ChatGPT room",
+  "chatgptRoomTitle": "ChatGPT room",
+  "chatgptRoomNote": "Use the linked ChatGPT room as the primary editing space, with the fields below kept as an in-system drafting aid.",
+  "newsroomChatWelcome": "Welcome to the Rasd newsroom chat. Send a story or question and I will help edit, translate, or verify it.",
+  "newsroomChatNote": "In-app editorial chat powered by OpenAI, with the external ChatGPT room kept as a fallback.",
+  "newsroomChatPlaceholder": "Write your newsroom request here...",
+  "chatThinking": "Preparing reply...",
+  "newRasd": "New Rasd",
+  "urgent": "Urgent",
+  "noSearchResults": "No stories match the current search.",
+  "searchFailed": "Search failed right now."
 }

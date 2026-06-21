@@ -100,40 +100,40 @@ export function evaluateVerification(sources: Array<{ source_type: SourceType; c
     : 20;
 
   if (sourceCount === 0) {
-    return { status: "unverified", confidenceScore: 10, reason: "No source basis has been attached yet." };
+    return { status: "unverified", confidenceScore: 10, reason: "لم يتم ربط أي مصدر بالخبر حتى الآن." };
   }
   if (monitoringOnly) {
     return {
       status: "monitoring",
       confidenceScore: Math.min(45, weightAverage),
-      reason: "Only monitoring-only sources are available; no confirmed alert should be sent."
+      reason: "المصادر المتاحة مصنفة للرصد فقط، لذلك يبقى الخبر تحت المتابعة."
     };
   }
   if (hasOfficial && hasMajorAgency) {
     return {
       status: "high_confidence",
       confidenceScore: Math.min(95, weightAverage + 12),
-      reason: "A major agency source is supported by an official source."
+      reason: "الخبر مدعوم بمصدر رسمي ووكالة كبرى."
     };
   }
   if (trustedCount >= 2) {
     return {
       status: "confirmed",
       confidenceScore: Math.min(90, weightAverage + 8),
-      reason: "Two or more trusted sources report the same story."
+      reason: "أورد الخبر مصدران موثوقان أو أكثر."
     };
   }
   if (hasOfficial || trustedCount === 1) {
     return {
-      status: "likely",
-      confidenceScore: Math.min(76, weightAverage),
-      reason: "One trusted or official source is available; continued monitoring is required before alerting."
+      status: "confirmed",
+      confidenceScore: Math.min(88, Math.max(82, weightAverage)),
+      reason: "أورد الخبر مصدر موثوق واحد، لذلك يعتمد كمؤكد وفق إعدادات رصد الحالية."
     };
   }
   return {
     status: "monitoring",
     confidenceScore: Math.min(55, weightAverage),
-    reason: "The source basis is limited and remains under monitoring."
+    reason: "قاعدة المصادر محدودة، ويبقى الخبر قيد الرصد."
   };
 }
 
@@ -144,12 +144,9 @@ export function shouldSendTrustedAlert(input: {
   alertSentAt?: string | null;
 }) {
   if (input.alertSentAt) return false;
-  if (input.importanceScore < 75 || input.confidenceScore < 80) return false;
 
   const trustedCount = input.sourceTypes.filter((type) => ["official", "major_agency", "trusted_media"].includes(type)).length;
-  const hasOfficial = input.sourceTypes.includes("official");
-  const hasMajorAgency = input.sourceTypes.includes("major_agency");
-  return trustedCount >= 2 || (hasOfficial && hasMajorAgency);
+  return trustedCount >= 1 && input.confidenceScore >= 80;
 }
 
 export function normalizeTopic(title: string) {

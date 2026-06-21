@@ -4,6 +4,10 @@ export const demoStories: StoryCluster[] = [
   {
     id: "demo-1",
     main_title: "Official sources report a developing regional ceasefire agreement",
+    arabic_title: "مصادر موثوقة تؤكد تطورات جديدة بشأن اتفاق إقليمي لوقف إطلاق النار",
+    arabic_excerpt: "تتابع رصد تطورات الاتفاق الإقليمي مع تسجيل اهتمام سياسي واسع ومتابعة من مصادر موثوقة.",
+    arabic_bullets: ["مصادر موثوقة تؤكد وجود تطورات جديدة.", "المتابعة مستمرة لرصد أي بيانات رسمية إضافية."],
+    translation_status: "ready",
     normalized_topic: "regional ceasefire agreement",
     category: "politics",
     importance_score: 86,
@@ -13,6 +17,10 @@ export const demoStories: StoryCluster[] = [
     source_count: 3,
     topic_tags: ["ceasefire", "diplomacy"],
     region_tags: ["middle_east"],
+    primary_source_name: "Reuters",
+    primary_source_url: "https://www.reuters.com",
+    primary_published_at: new Date(Date.now() - 1000 * 60 * 40).toISOString(),
+    primary_article_id: null,
     alert_sent_at: null,
     first_seen_at: new Date(Date.now() - 1000 * 60 * 40).toISOString(),
     last_seen_at: new Date().toISOString()
@@ -20,6 +28,10 @@ export const demoStories: StoryCluster[] = [
   {
     id: "demo-2",
     main_title: "Monitoring reports indicate an explosion near a government facility",
+    arabic_title: "تقارير رصد تشير إلى انفجار قرب منشأة حكومية في المنطقة",
+    arabic_excerpt: "تشير تقارير أولية إلى وقوع انفجار قرب منشأة حكومية، بينما تستمر المتابعة بانتظار معلومات إضافية.",
+    arabic_bullets: ["المعلومات ما زالت أولية.", "لم يصدر تأكيد رسمي شامل حتى الآن."],
+    translation_status: "ready",
     normalized_topic: "explosion near government facility",
     category: "security",
     importance_score: 78,
@@ -29,6 +41,10 @@ export const demoStories: StoryCluster[] = [
     source_count: 1,
     topic_tags: ["security"],
     region_tags: ["middle_east"],
+    primary_source_name: "Monitoring source",
+    primary_source_url: "https://example.com",
+    primary_published_at: new Date(Date.now() - 1000 * 60 * 18).toISOString(),
+    primary_article_id: null,
     alert_sent_at: null,
     first_seen_at: new Date(Date.now() - 1000 * 60 * 18).toISOString(),
     last_seen_at: new Date().toISOString()

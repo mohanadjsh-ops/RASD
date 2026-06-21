@@ -1,78 +1,111 @@
 "use client";
 
-import { useState } from "react";
-import { Copy, ExternalLink, FileText, Link as LinkIcon, MessageCircle } from "lucide-react";
+import { ExternalLink, MessageCircle, SendHorizontal } from "lucide-react";
+import { useRef, useState, useTransition } from "react";
 
 const chatgptRoomUrl = "https://chatgpt.com/c/6a09e357-1d88-83eb-a153-c014998aeef0";
 
-export function NewsroomTool({ labels }: { labels: Record<string, string> }) {
-  const [text, setText] = useState("");
-  const [links, setLinks] = useState("");
+type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
 
-  const copy = (value: string) => navigator.clipboard.writeText(value);
+export function NewsroomTool({ labels }: { labels: Record<string, string> }) {
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { role: "assistant", content: labels.newsroomChatWelcome }
+  ]);
+  const [input, setInput] = useState("");
+  const [error, setError] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+
+  function send() {
+    const content = input.trim();
+    if (!content) return;
+    const nextMessages = [...messages, { role: "user" as const, content }];
+    setMessages(nextMessages);
+    setInput("");
+    setError("");
+
+    startTransition(async () => {
+      const response = await fetch("/api/newsroom/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ messages: nextMessages.slice(-12) })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setError(data.error ?? labels.error);
+        return;
+      }
+      setMessages((current) => [...current, { role: "assistant", content: data.reply ?? labels.error }]);
+      window.setTimeout(() => inputRef.current?.focus(), 50);
+    });
+  }
 
   return (
-    <section>
+    <section dir="rtl" className="mx-auto max-w-5xl">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-slate-950">{labels.newsroomTool}</h1>
-          <p className="mt-1 text-sm text-slate-600">{labels.chatgptRoomNote}</p>
+          <p className="mt-1 text-sm text-slate-600">{labels.newsroomChatNote}</p>
         </div>
         <a
           href={chatgptRoomUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-md bg-electric px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-electric/25 transition hover:-translate-y-0.5 hover:bg-verified"
+          className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-electric hover:text-electric"
         >
           <MessageCircle className="h-4 w-4" aria-hidden />
           {labels.openChatgptRoom}
           <ExternalLink className="h-4 w-4" aria-hidden />
         </a>
       </div>
-      <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_360px]">
-        <div className="rounded-md border border-line bg-panel p-4 shadow-sm shadow-slate-200">
-          <label className="block text-sm font-medium text-slate-700">
-            <span className="inline-flex items-center gap-2">
-              <FileText className="h-4 w-4 text-electric" aria-hidden />
-              {labels.sourceText}
-            </span>
-            <textarea value={text} onChange={(event) => setText(event.target.value)} className="mt-2 min-h-72 w-full rounded-md border border-line bg-white p-3 text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" />
-          </label>
-          <label className="mt-4 block text-sm font-medium text-slate-700">
-            <span className="inline-flex items-center gap-2">
-              <LinkIcon className="h-4 w-4 text-electric" aria-hidden />
-              {labels.optionalLinks}
-            </span>
-            <textarea value={links} onChange={(event) => setLinks(event.target.value)} className="mt-2 min-h-24 w-full rounded-md border border-line bg-white p-3 text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" />
-          </label>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button type="button" onClick={() => copy(text)} disabled={!text} className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-electric hover:text-electric disabled:opacity-50">
-              <Copy className="h-4 w-4" aria-hidden />
-              {labels.copy} {labels.sourceText}
-            </button>
-            <button type="button" onClick={() => copy(links)} disabled={!links} className="inline-flex items-center gap-2 rounded-md border border-line bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-electric hover:text-electric disabled:opacity-50">
-              <Copy className="h-4 w-4" aria-hidden />
-              {labels.copy} {labels.sourceLinks}
+
+      <div className="mt-5 overflow-hidden rounded-md border border-line bg-white shadow-sm shadow-slate-200">
+        <div className="h-[58vh] min-h-[420px] space-y-4 overflow-y-auto bg-slate-50 p-5">
+          {messages.map((message, index) => (
+            <div key={`${message.role}-${index}`} className={message.role === "user" ? "flex justify-start" : "flex justify-end"}>
+              <div
+                className={[
+                  "max-w-[82%] rounded-md px-4 py-3 text-sm leading-7 shadow-sm",
+                  message.role === "user" ? "bg-electric text-white" : "border border-line bg-white text-slate-800"
+                ].join(" ")}
+              >
+                {message.content}
+              </div>
+            </div>
+          ))}
+          {isPending ? <div className="text-sm text-slate-500">{labels.chatThinking}</div> : null}
+        </div>
+        <div className="border-t border-line bg-white p-4">
+          {error ? <p className="mb-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p> : null}
+          <div className="grid gap-3 md:grid-cols-[1fr_52px]">
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  send();
+                }
+              }}
+              className="min-h-24 rounded-md border border-line bg-white p-3 text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric"
+              placeholder={labels.newsroomChatPlaceholder}
+            />
+            <button
+              type="button"
+              onClick={send}
+              disabled={isPending || !input.trim()}
+              className="grid h-full min-h-24 place-items-center rounded-md bg-electric text-white shadow-lg shadow-electric/25 transition hover:-translate-y-0.5 hover:bg-verified disabled:opacity-60"
+              aria-label={labels.send}
+              title={labels.send}
+            >
+              <SendHorizontal className="h-5 w-5" aria-hidden />
             </button>
           </div>
         </div>
-        <aside className="rounded-md border border-line bg-white p-5 shadow-sm shadow-slate-200">
-          <div className="grid h-12 w-12 place-items-center rounded-md bg-electric/10 text-electric">
-            <MessageCircle className="h-6 w-6" aria-hidden />
-          </div>
-          <h2 className="mt-5 text-lg font-semibold text-slate-950">{labels.chatgptRoomTitle}</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{labels.chatgptRoomNote}</p>
-          <a
-            href={chatgptRoomUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-electric px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-electric/25 transition hover:-translate-y-0.5 hover:bg-verified"
-          >
-            <MessageCircle className="h-4 w-4" aria-hidden />
-            {labels.openChatgptRoom}
-            <ExternalLink className="h-4 w-4" aria-hidden />
-          </a>
-        </aside>
       </div>
     </section>
   );

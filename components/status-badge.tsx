@@ -1,5 +1,4 @@
-import type { VerificationStatus } from "@/types/app";
-import type { Locale } from "@/types/app";
+import type { Locale, VerificationStatus } from "@/types/app";
 
 const styles: Record<VerificationStatus, string> = {
   unverified: "border-slate-300 bg-slate-50 text-slate-600",

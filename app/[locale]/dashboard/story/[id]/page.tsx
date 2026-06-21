@@ -23,11 +23,12 @@ export default async function StoryPage({ params }: { params: Promise<{ locale: 
   const translatedSourceTitles = locale === "ar" ? await translateTextListToArabic(sourceList.map((row) => row.raw_articles?.title ?? "")) : [];
 
   return (
-    <section className="max-w-5xl">
+    <section className="max-w-5xl" dir={locale === "ar" ? "rtl" : "ltr"}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-950">{story.main_title}</h1>
-          <p className="mt-2 text-slate-600">{story.normalized_topic}</p>
+          <h1 className="text-2xl font-semibold text-slate-950">{locale === "ar" ? story.arabic_title ?? story.main_title : story.main_title}</h1>
+          <p className="mt-2 text-slate-600">{story.primary_source_name ?? story.normalized_topic}</p>
+          <p className="mt-1 text-sm text-slate-500">{formatMakkahTime(story.primary_published_at ?? story.first_seen_at)}</p>
         </div>
         <StatusBadge status={story.verification_status} locale={locale} />
       </div>
@@ -38,7 +39,12 @@ export default async function StoryPage({ params }: { params: Promise<{ locale: 
       </div>
       <div className="mt-6 rounded-md border border-line bg-panel p-5 shadow-sm shadow-slate-200">
         <h2 className="font-semibold text-slate-950">{t.verificationReason}</h2>
-        <p className="mt-3 text-slate-700">{story.verification_reason}</p>
+        <p className="mt-3 text-slate-700">{story.arabic_excerpt ?? story.verification_reason}</p>
+        {story.arabic_bullets?.length ? (
+          <ul className="mt-4 space-y-2 text-slate-800">
+            {story.arabic_bullets.map((bullet: string) => <li key={bullet}>• {bullet}</li>)}
+          </ul>
+        ) : null}
       </div>
       <div className="mt-6 rounded-md border border-line bg-panel p-5 shadow-sm shadow-slate-200">
         <h2 className="font-semibold text-slate-950">{t.sourceLinks}</h2>
@@ -65,4 +71,15 @@ export default async function StoryPage({ params }: { params: Promise<{ locale: 
       </div>
     </section>
   );
+}
+
+function formatMakkahTime(value: string | null) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("ar-SA", {
+    timeZone: "Asia/Riyadh",
+    dateStyle: "medium",
+    timeStyle: "medium"
+  }).format(date);
 }
