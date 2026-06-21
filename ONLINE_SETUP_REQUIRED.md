@@ -1,6 +1,6 @@
 # Rasd Online Status
 
-The project is deployed, connected to Supabase, and the primary admin account has been created.
+The project is deployed, connected to Supabase, connected to OpenAI, and connected to Telegram.
 
 ## Already Completed
 
@@ -10,15 +10,11 @@ The project is deployed, connected to Supabase, and the primary admin account ha
 - Supabase production environment variables are present in Vercel.
 - Supabase migrations were applied to the live project.
 - Supabase Cron is scheduled to call ingestion every minute.
+- OpenAI API is configured for the newsroom generation route.
+- Telegram bot alerts are configured and a direct Telegram test message was sent.
 - The admin account is ready: `mohannadaljashi@gmail.com`.
 - One-click local launcher: `Start-Rasd-Local.bat`
 
-## Still Needed
+## Operational Notes
 
-Add these values from provider dashboards to enable AI editing and Telegram alerts:
-
-- `OPENAI_API_KEY`
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_DEFAULT_CHAT_ID`
-
-Use `Finish-Rasd-Online-Setup.bat` to paste them once and deploy again, or add them directly in Vercel production environment variables.
+All required production environment variables are present in Vercel. Rotate the OpenAI and Telegram secrets from their provider dashboards if they are ever shared outside the deployment workflow.
