@@ -49,4 +49,22 @@
   "keyPoints": "النقاط الرئيسية",
   "verificationNote": "ملاحظة التحقق",
   "riskFlags": "مؤشرات المخاطر"
+  ,"headerStatus": "غرفة أخبار موثوقة"
+  ,"sourceBasedMonitoring": "رصد مبني على المصادر، تقييم ثقة واضح، وتنبيهات خاصة."
+  ,"openNewsroom": "فتح أداة التحرير"
+  ,"sourcesCount": "المصادر"
+  ,"addSource": "إضافة مصدر"
+  ,"enabled": "مفعل"
+  ,"disabled": "معطل"
+  ,"media": "الوسائط"
+  ,"emailAlerts": "تنبيهات البريد"
+  ,"emailAlertsDisabled": "تنبيهات البريد معطلة"
+  ,"keywords": "الكلمات المفتاحية"
+  ,"minimumConfidence": "الحد الأدنى للثقة"
+  ,"telegramAlerts": "تنبيهات تيليغرام"
+  ,"channel": "القناة"
+  ,"sentTo": "أرسلت إلى"
+  ,"createdAt": "وقت الإنشاء"
+  ,"entityType": "نوع العنصر"
+  ,"entityId": "معرف العنصر"
 }

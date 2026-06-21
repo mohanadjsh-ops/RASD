@@ -49,4 +49,22 @@
   "keyPoints": "Key points",
   "verificationNote": "Verification note",
   "riskFlags": "Risk flags"
+  ,"headerStatus": "Trusted newsroom"
+  ,"sourceBasedMonitoring": "Source-based monitoring, transparent confidence scoring, private alerts."
+  ,"openNewsroom": "Open newsroom"
+  ,"sourcesCount": "Sources"
+  ,"addSource": "Add source"
+  ,"enabled": "Enabled"
+  ,"disabled": "Disabled"
+  ,"media": "Media"
+  ,"emailAlerts": "Email alerts"
+  ,"emailAlertsDisabled": "Email alerts disabled"
+  ,"keywords": "Keywords"
+  ,"minimumConfidence": "Minimum confidence"
+  ,"telegramAlerts": "Telegram alerts"
+  ,"channel": "Channel"
+  ,"sentTo": "Sent to"
+  ,"createdAt": "Created at"
+  ,"entityType": "Entity type"
+  ,"entityId": "Entity ID"
 }

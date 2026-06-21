@@ -9,6 +9,8 @@ const protectedSegment = /^\/(ar|en)\/dashboard/;
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const first = pathname.split("/")[1];
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-current-path", pathname);
 
   if (!isLocale(first)) {
     const url = request.nextUrl.clone();
@@ -16,7 +18,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  let response = NextResponse.next({ request });
+  let response = NextResponse.next({ request: { headers: requestHeaders } });
 
   if (protectedSegment.test(pathname)) {
     if (isDemoLoginEnabled() && request.cookies.get(demoAuthCookieName)?.value === "admin") {
@@ -31,7 +33,7 @@ export async function middleware(request: NextRequest) {
           getAll: () => request.cookies.getAll(),
           setAll: (cookiesToSet: Array<{ name: string; value: string; options: CookieOptions }>) => {
             cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-            response = NextResponse.next({ request });
+            response = NextResponse.next({ request: { headers: requestHeaders } });
             cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
           }
         }

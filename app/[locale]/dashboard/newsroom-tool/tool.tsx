@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Copy } from "lucide-react";
+import { Copy, FileText, Link as LinkIcon, Sparkles } from "lucide-react";
 
 type Output = {
   headline_12_words: string;
@@ -32,7 +32,8 @@ export function NewsroomTool({ labels }: { labels: Record<string, string> }) {
       if (response.ok) {
         setOutput(await response.json());
       } else {
-        setError("تعذر توليد الإسناد التحريري. تحقق من الإعدادات وحاول مجددا.");
+        const result = await response.json().catch(() => null);
+        setError(result?.error ?? "تعذر توليد الإسناد التحريري. تحقق من الإعدادات وحاول مجددا.");
       }
     });
   }
@@ -43,16 +44,23 @@ export function NewsroomTool({ labels }: { labels: Record<string, string> }) {
     <section>
       <h1 className="text-2xl font-semibold text-white">{labels.newsroomTool}</h1>
       <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_0.9fr]">
-        <div className="rounded-md border border-line bg-panel p-4">
+        <div className="rounded-md border border-line bg-panel p-4 shadow-sm shadow-black/20">
           <label className="block text-sm text-slate-300">
-            {labels.sourceText}
-            <textarea value={text} onChange={(event) => setText(event.target.value)} className="mt-2 min-h-72 w-full rounded-md border border-line bg-navy p-3 text-white" />
+            <span className="inline-flex items-center gap-2">
+              <FileText className="h-4 w-4 text-electric" aria-hidden />
+              {labels.sourceText}
+            </span>
+            <textarea value={text} onChange={(event) => setText(event.target.value)} className="mt-2 min-h-72 w-full rounded-md border border-line bg-black/20 p-3 text-white outline-none transition focus:border-electric" />
           </label>
           <label className="mt-4 block text-sm text-slate-300">
-            {labels.optionalLinks}
-            <textarea value={links} onChange={(event) => setLinks(event.target.value)} className="mt-2 min-h-24 w-full rounded-md border border-line bg-navy p-3 text-white" />
+            <span className="inline-flex items-center gap-2">
+              <LinkIcon className="h-4 w-4 text-electric" aria-hidden />
+              {labels.optionalLinks}
+            </span>
+            <textarea value={links} onChange={(event) => setLinks(event.target.value)} className="mt-2 min-h-24 w-full rounded-md border border-line bg-black/20 p-3 text-white outline-none transition focus:border-electric" />
           </label>
-          <button disabled={pending || text.length < 20} onClick={generate} className="mt-4 rounded-md bg-electric px-4 py-2 font-semibold text-white disabled:opacity-50">
+          <button disabled={pending || text.length < 20} onClick={generate} className="mt-4 inline-flex items-center gap-2 rounded-md bg-electric px-4 py-2 font-semibold text-black shadow-sm shadow-electric/20 disabled:opacity-50">
+            <Sparkles className="h-4 w-4" aria-hidden />
             {pending ? "..." : labels.generate}
           </button>
           {error ? <p className="mt-3 text-sm text-urgent">{error}</p> : null}
@@ -70,7 +78,7 @@ export function NewsroomTool({ labels }: { labels: Record<string, string> }) {
               <OutputCard title={labels.riskFlags} value={output.risk_flags.join("\n")} onCopy={copy} />
             </>
           ) : (
-            <div className="rounded-md border border-line bg-panel p-8 text-slate-400">{labels.empty}</div>
+            <div className="rounded-md border border-line bg-panel p-8 text-slate-400 shadow-sm shadow-black/20">{labels.empty}</div>
           )}
         </div>
       </div>
@@ -80,10 +88,10 @@ export function NewsroomTool({ labels }: { labels: Record<string, string> }) {
 
 function OutputCard({ title, value, onCopy }: { title: string; value: string; onCopy: (value: string) => void }) {
   return (
-    <article className="rounded-md border border-line bg-panel p-4">
+    <article className="rounded-md border border-line bg-panel p-4 shadow-sm shadow-black/20">
       <div className="flex items-center justify-between gap-3">
         <h2 className="font-semibold text-white">{title}</h2>
-        <button onClick={() => onCopy(value)} className="rounded-md border border-line p-2 text-slate-300 hover:border-electric" title="Copy">
+        <button onClick={() => onCopy(value)} className="rounded-md border border-line bg-black/20 p-2 text-slate-300 transition hover:border-electric hover:text-white" title="Copy">
           <Copy className="h-4 w-4" aria-hidden />
         </button>
       </div>

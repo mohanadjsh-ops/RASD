@@ -5,12 +5,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy: "#07111f",
-        panel: "#0d1b2d",
-        line: "#1b3454",
-        electric: "#1e8bff",
+        navy: "#050705",
+        panel: "#111611",
+        line: "#263226",
+        electric: "#8cc63f",
         urgent: "#ef4444",
-        verified: "#16a34a"
+        verified: "#8cc63f"
       },
       fontFamily: {
         sans: ["Inter", "Arial", "sans-serif"]

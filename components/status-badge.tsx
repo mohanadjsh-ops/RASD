@@ -1,13 +1,31 @@
 import type { VerificationStatus } from "@/types/app";
+import type { Locale } from "@/types/app";
 
 const styles: Record<VerificationStatus, string> = {
-  unverified: "border-slate-600 text-slate-300",
-  monitoring: "border-electric/50 text-electric",
-  likely: "border-yellow-500/50 text-yellow-300",
-  confirmed: "border-verified/50 text-verified",
-  high_confidence: "border-verified bg-verified/10 text-verified"
+  unverified: "border-slate-600 bg-slate-900/60 text-slate-300",
+  monitoring: "border-electric/50 bg-electric/10 text-electric",
+  likely: "border-yellow-500/50 bg-yellow-500/10 text-yellow-200",
+  confirmed: "border-verified/50 bg-verified/10 text-verified",
+  high_confidence: "border-verified bg-verified/15 text-verified"
 };
 
-export function StatusBadge({ status }: { status: VerificationStatus }) {
-  return <span className={`rounded-md border px-2 py-1 text-xs font-medium ${styles[status]}`}>{status}</span>;
+const labels: Record<Locale, Record<VerificationStatus, string>> = {
+  ar: {
+    unverified: "غير موثق",
+    monitoring: "قيد الرصد",
+    likely: "مرجح",
+    confirmed: "مؤكد",
+    high_confidence: "ثقة عالية"
+  },
+  en: {
+    unverified: "Unverified",
+    monitoring: "Monitoring",
+    likely: "Likely",
+    confirmed: "Confirmed",
+    high_confidence: "High confidence"
+  }
+};
+
+export function StatusBadge({ status, locale = "en" }: { status: VerificationStatus; locale?: Locale }) {
+  return <span className={`rounded-full border px-2.5 py-1 text-xs font-medium ${styles[status]}`}>{labels[locale][status]}</span>;
 }

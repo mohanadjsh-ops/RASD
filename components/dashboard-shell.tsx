@@ -23,29 +23,39 @@ export async function DashboardShell({ children, locale }: { children: React.Rea
 
   return (
     <div className="min-h-screen bg-navy text-slate-100">
-      <aside className="fixed inset-y-0 hidden w-72 border-e border-line bg-panel/95 p-5 lg:block">
-        <RasdLogo label={t.brand} />
-        <nav className="mt-8 space-y-1">
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex items-center gap-3 rounded-md px-3 py-3 text-sm text-slate-300 hover:bg-electric/10 hover:text-white"
-            >
-              <item.icon className="h-4 w-4" aria-hidden />
-              {item.label}
-            </Link>
-          ))}
+      <aside className="fixed inset-y-0 hidden w-72 border-e border-line bg-panel/95 p-4 shadow-2xl shadow-black/25 lg:block">
+        <div className="rounded-md border border-line bg-black/20 p-3">
+          <RasdLogo label={t.brand} />
+        </div>
+        <nav className="mt-6 space-y-1">
+          {items.map((item) => {
+            const active = item.href === `/${locale}/dashboard` ? currentPath === item.href : currentPath.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={[
+                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition",
+                  active
+                    ? "border border-electric/40 bg-electric/15 text-white shadow-sm shadow-electric/10"
+                    : "text-slate-300 hover:bg-white/5 hover:text-white"
+                ].join(" ")}
+              >
+                <item.icon className={active ? "h-4 w-4 text-electric" : "h-4 w-4 text-slate-500"} aria-hidden />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
       </aside>
       <div className="lg:ps-72">
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-navy/90 px-4 py-3 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-navy/85 px-4 py-3 backdrop-blur lg:px-8">
           <div className="lg:hidden">
             <RasdLogo label={t.brand} />
           </div>
           <div className="hidden items-center gap-2 text-sm text-slate-300 lg:flex">
             <ShieldCheck className="h-4 w-4 text-electric" aria-hidden />
-            Private newsroom intelligence
+            {t.headerStatus}
           </div>
           <LanguageSwitcher locale={locale} path={currentPath} />
         </header>

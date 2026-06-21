@@ -12,8 +12,8 @@
 
 body {
   margin: 0;
-  background: #07111f;
-  color: #e5eefb;
+  background: #050705;
+  color: #edf5e8;
 }
 
 button,
@@ -24,6 +24,10 @@ select {
 }
 
 .focus-ring:focus-visible {
-  outline: 2px solid #1e8bff;
+  outline: 2px solid #8cc63f;
   outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(140, 198, 63, 0.35);
 }

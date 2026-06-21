@@ -79,7 +79,7 @@ async function ingestSource(source: Source) {
   let updatedClusters = 0;
   let alertsSent = 0;
 
-  for (const item of feed.items.slice(0, 30)) {
+  for (const item of feed.items.slice(0, 8)) {
     const title = item.title?.trim() || "Untitled";
     const itemUrl = item.link?.trim();
     if (!itemUrl) continue;
@@ -91,7 +91,7 @@ async function ingestSource(source: Source) {
     const importanceScore = calculateImportanceScore(`${title} ${rawContent}`);
     const mediaLinks = [
       ...extractMediaFromFeedItem(item as Record<string, unknown>),
-      ...(importanceScore >= 60 ? await fetchOpenGraphMedia(canonicalUrl) : [])
+      ...(importanceScore >= 82 ? await fetchOpenGraphMedia(canonicalUrl) : [])
     ];
 
     const article = await upsertArticle({

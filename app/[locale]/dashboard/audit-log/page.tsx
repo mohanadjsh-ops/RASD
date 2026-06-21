@@ -13,7 +13,7 @@ export default async function AuditLogPage({ params }: { params: Promise<{ local
   return (
     <section>
       <h1 className="text-2xl font-semibold text-white">{t.auditLog}</h1>
-      <div className="mt-5 rounded-md border border-line bg-panel">
+      <div className="mt-5 overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-black/20">
         {data?.length ? data.map((log) => (
           <div key={log.id} className="grid gap-2 border-b border-line p-4 text-sm last:border-0 md:grid-cols-5">
             <span>{log.action}</span>

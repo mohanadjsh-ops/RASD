@@ -15,9 +15,9 @@ export default async function AlertsPage({ params }: { params: Promise<{ locale:
     <section>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold text-white">{t.alerts}</h1>
-        {isAdmin ? <form action="/api/alerts/telegram/test" method="post"><button className="rounded-md bg-electric px-4 py-2 text-sm font-semibold text-white">{t.testTelegram}</button></form> : null}
+        {isAdmin ? <form action="/api/alerts/telegram/test" method="post"><button className="rounded-md bg-electric px-4 py-2 text-sm font-semibold text-black shadow-sm shadow-electric/20">{t.testTelegram}</button></form> : null}
       </div>
-      <div className="mt-5 rounded-md border border-line bg-panel">
+      <div className="mt-5 overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-black/20">
         {data?.length ? data.map((alert) => (
           <div key={alert.id} className="grid gap-2 border-b border-line p-4 text-sm last:border-0 md:grid-cols-5">
             <span>{alert.channel_type}</span>

@@ -53,32 +53,32 @@ export function UsersAdmin({ labels }: { labels: Record<string, string> }) {
     <section>
       <h1 className="text-2xl font-semibold text-white">{labels.users}</h1>
       <div className="mt-5 grid gap-5 lg:grid-cols-[360px_1fr]">
-        <form action={createUser} className="rounded-md border border-line bg-panel p-5">
+        <form action={createUser} className="rounded-md border border-line bg-panel p-5 shadow-sm shadow-black/20">
           <label className="block text-sm text-slate-300">
             {labels.fullName}
-            <input name="fullName" required className="mt-2 w-full rounded-md border border-line bg-navy px-3 py-2 text-white" />
+            <input name="fullName" required className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" />
           </label>
           <label className="mt-4 block text-sm text-slate-300">
             {labels.email}
-            <input name="email" type="email" required className="mt-2 w-full rounded-md border border-line bg-navy px-3 py-2 text-white" />
+            <input name="email" type="email" required className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" />
           </label>
           <label className="mt-4 block text-sm text-slate-300">
             {labels.password}
-            <input name="password" type="password" required className="mt-2 w-full rounded-md border border-line bg-navy px-3 py-2 text-white" />
+            <input name="password" type="password" required className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" />
           </label>
           <label className="mt-4 block text-sm text-slate-300">
             {labels.role}
-            <select name="role" className="mt-2 w-full rounded-md border border-line bg-navy px-3 py-2 text-white">
+            <select name="role" className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric">
               <option value="viewer">viewer</option>
               <option value="admin">admin</option>
             </select>
           </label>
-          <button disabled={pending} className="mt-5 rounded-md bg-electric px-4 py-2 font-semibold text-white disabled:opacity-50">
+          <button disabled={pending} className="mt-5 rounded-md bg-electric px-4 py-2 font-semibold text-black shadow-sm shadow-electric/20 disabled:opacity-50">
             {labels.createUser}
           </button>
           {message ? <p className="mt-3 text-sm text-slate-300">{message}</p> : null}
         </form>
-        <div className="overflow-hidden rounded-md border border-line bg-panel">
+        <div className="overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-black/20">
           {users.length ? (
             users.map((user) => (
               <div key={user.id} className="grid gap-2 border-b border-line p-4 text-sm last:border-0 md:grid-cols-4">

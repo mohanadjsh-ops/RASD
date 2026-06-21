@@ -8,13 +8,13 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
   return (
     <section className="max-w-3xl">
       <h1 className="text-2xl font-semibold text-white">{t.settings}</h1>
-      <form className="mt-5 space-y-4 rounded-md border border-line bg-panel p-5">
-        <label className="block text-sm text-slate-500">Email alerts<input disabled className="mt-2 w-full rounded-md border border-line bg-navy px-3 py-2" placeholder="disabled" /></label>
-        <label className="block text-sm text-slate-300">Keywords<textarea className="mt-2 w-full rounded-md border border-line bg-navy px-3 py-2" /></label>
-        <label className="block text-sm text-slate-300">Minimum confidence<input type="number" min="0" max="100" className="mt-2 w-full rounded-md border border-line bg-navy px-3 py-2" /></label>
-        <label className="flex items-center gap-3 text-sm text-slate-500"><input type="checkbox" disabled /> Email alerts disabled</label>
-        <label className="flex items-center gap-3 text-sm text-slate-300"><input type="checkbox" defaultChecked /> Telegram alerts</label>
-        <button className="rounded-md bg-electric px-4 py-2 font-semibold text-white">{t.save}</button>
+      <form className="mt-5 space-y-4 rounded-md border border-line bg-panel p-5 shadow-sm shadow-black/20">
+        <label className="block text-sm text-slate-500">{t.emailAlerts}<input disabled className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2" placeholder={t.disabled} /></label>
+        <label className="block text-sm text-slate-300">{t.keywords}<textarea className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" /></label>
+        <label className="block text-sm text-slate-300">{t.minimumConfidence}<input type="number" min="0" max="100" className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" /></label>
+        <label className="flex items-center gap-3 text-sm text-slate-500"><input type="checkbox" disabled /> {t.emailAlertsDisabled}</label>
+        <label className="flex items-center gap-3 text-sm text-slate-300"><input type="checkbox" defaultChecked /> {t.telegramAlerts}</label>
+        <button className="rounded-md bg-electric px-4 py-2 font-semibold text-black shadow-sm shadow-electric/20">{t.save}</button>
       </form>
     </section>
   );

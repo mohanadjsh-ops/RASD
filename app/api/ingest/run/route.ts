@@ -4,6 +4,8 @@ import { serverEnv } from "@/lib/env";
 import { rateLimit } from "@/lib/rate-limit";
 import { writeAuditLog } from "@/lib/audit";
 
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   const secret = request.headers.get("x-cron-secret");
   if (!serverEnv.CRON_SECRET || secret !== serverEnv.CRON_SECRET) {
