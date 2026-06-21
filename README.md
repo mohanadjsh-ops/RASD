@@ -14,6 +14,8 @@ Open `http://localhost:3000/ar` or `http://localhost:3000/en`.
 
 On Windows, double-click `Start-Rasd-Local.bat` to start the local version on `http://localhost:3002/ar/login`.
 
+For online setup, use `Setup-Rasd-Online-Env.bat` after copying the missing keys from Supabase, OpenAI, and Telegram.
+
 ## Checks
 
 ```bash
