@@ -8,8 +8,9 @@ set "NODE_BIN=%USERPROFILE%\.cache\codex-runtimes\codex-primary-runtime\dependen
 set "PNPM_BIN=%USERPROFILE%\.cache\codex-runtimes\codex-primary-runtime\dependencies\bin"
 set "PATH=%NODE_BIN%;%PNPM_BIN%;%PATH%"
 
-echo This setup stores secrets in Vercel and writes .env.local for local testing.
-echo Paste values from Supabase, OpenAI, and Telegram when asked.
+echo This older setup stores secrets in Vercel and writes .env.local for local testing.
+echo For the complete guided setup, close this window and run:
+echo Finish-Rasd-Online-Setup.bat
 echo.
 
 set /p NEXT_PUBLIC_SUPABASE_URL=Supabase Project URL [https://hucnuhbppbrxijkyozcy.supabase.co]:

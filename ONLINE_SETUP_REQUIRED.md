@@ -20,7 +20,7 @@ Add these values from provider dashboards:
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_DEFAULT_CHAT_ID`
 
-Use `Setup-Rasd-Online-Env.bat` to paste them once and deploy again.
+Use `Finish-Rasd-Online-Setup.bat` to paste them once, deploy again, apply Supabase migrations when a Pooler URL is provided, create the admin account, and test Telegram.
 
 ## Supabase Migrations
 
@@ -28,7 +28,7 @@ The direct DB host resolves only to IPv6 from this environment, and this machine
 
 To finish Supabase, either:
 
-1. Open Supabase Dashboard -> Project Settings -> Database -> Connection string -> Transaction pooler, then provide that full connection string, or
+1. Open Supabase Dashboard -> Connect -> Session pooler, then paste that full connection string into `Finish-Rasd-Online-Setup.bat`, or
 2. Run the SQL files manually in Supabase SQL Editor:
    - `supabase/migrations/001_initial_schema.sql`
    - `supabase/migrations/002_operational_newsroom.sql`
