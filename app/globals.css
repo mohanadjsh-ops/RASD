@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -12,8 +12,8 @@
 
 body {
   margin: 0;
-  background: #050705;
-  color: #edf5e8;
+  background: #f6f8f3;
+  color: #162012;
 }
 
 button,
@@ -29,5 +29,20 @@ select {
 }
 
 ::selection {
-  background: rgba(140, 198, 63, 0.35);
+  background: rgba(118, 184, 42, 0.25);
+}
+
+.login-grid {
+  background-image:
+    linear-gradient(rgba(118, 184, 42, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(118, 184, 42, 0.09) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.interactive-icon {
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.group:hover .interactive-icon {
+  transform: translateY(-1px) scale(1.06);
 }

@@ -15,27 +15,27 @@ export default async function BreakingNewsPage({ params }: { params: Promise<{ l
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold text-white">{t.breakingNews}</h1>
+      <h1 className="text-2xl font-semibold text-slate-950">{t.breakingNews}</h1>
       <div className="mt-4 grid gap-3 md:grid-cols-4">
-        <input className="rounded-md border border-line bg-panel px-3 py-2 text-sm text-white outline-none transition focus:border-electric" placeholder={t.search} />
-        <select className="rounded-md border border-line bg-panel px-3 py-2 text-sm text-white outline-none transition focus:border-electric" aria-label={t.status}>
+        <input className="rounded-md border border-line bg-white px-3 py-2 text-sm text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" placeholder={t.search} />
+        <select className="rounded-md border border-line bg-white px-3 py-2 text-sm text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" aria-label={t.status}>
           <option>{t.status}</option>
           <option>{locale === "ar" ? "قيد الرصد" : "Monitoring"}</option>
           <option>{locale === "ar" ? "مؤكد" : "Confirmed"}</option>
           <option>{locale === "ar" ? "ثقة عالية" : "High confidence"}</option>
         </select>
-        <input className="rounded-md border border-line bg-panel px-3 py-2 text-sm text-white outline-none transition focus:border-electric" placeholder={t.category} />
-        <input className="rounded-md border border-line bg-panel px-3 py-2 text-sm text-white outline-none transition focus:border-electric" placeholder={t.language} />
+        <input className="rounded-md border border-line bg-white px-3 py-2 text-sm text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" placeholder={t.category} />
+        <input className="rounded-md border border-line bg-white px-3 py-2 text-sm text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" placeholder={t.language} />
       </div>
-      <div className="mt-5 overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-black/20">
+      <div className="mt-5 overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-slate-200">
         {stories.map((story) => (
-          <Link key={story.id} href={`/${locale}/dashboard/story/${story.id}`} className="grid gap-3 border-b border-line p-4 transition last:border-0 hover:bg-white/5 md:grid-cols-[1fr_auto_auto]">
+          <Link key={story.id} href={`/${locale}/dashboard/story/${story.id}`} className="grid gap-3 border-b border-line p-4 transition last:border-0 hover:bg-navy md:grid-cols-[1fr_auto_auto]">
             <div>
-              <h2 className="font-medium text-white">{story.main_title}</h2>
-              <p className="mt-1 text-sm text-slate-400">{story.normalized_topic}</p>
+              <h2 className="font-medium text-slate-950">{story.main_title}</h2>
+              <p className="mt-1 text-sm text-slate-600">{story.normalized_topic}</p>
             </div>
             <StatusBadge status={story.verification_status} locale={locale} />
-            <div className="text-sm text-slate-300">{t.confidence}: {story.confidence_score}% · {t.sourcesCount}: {story.source_count ?? 0}</div>
+            <div className="text-sm text-slate-600">{t.confidence}: {story.confidence_score}% - {t.sourcesCount}: {story.source_count ?? 0}</div>
           </Link>
         ))}
       </div>

@@ -67,4 +67,7 @@
   ,"createdAt": "Created at"
   ,"entityType": "Entity type"
   ,"entityId": "Entity ID"
+  ,"openChatgptRoom": "Open ChatGPT room"
+  ,"chatgptRoomTitle": "ChatGPT room"
+  ,"chatgptRoomNote": "Use the linked ChatGPT room as the primary editing space, with the fields below kept as an in-system drafting aid."
 }

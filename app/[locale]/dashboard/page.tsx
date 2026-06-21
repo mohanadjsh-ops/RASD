@@ -22,10 +22,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     <section>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-white">{t.overview}</h1>
-          <p className="mt-1 text-sm text-slate-400">{t.sourceBasedMonitoring}</p>
+          <h1 className="text-2xl font-semibold text-slate-950">{t.overview}</h1>
+          <p className="mt-1 text-sm text-slate-600">{t.sourceBasedMonitoring}</p>
         </div>
-        <Link href={`/${locale}/dashboard/newsroom-tool`} className="inline-flex items-center gap-2 rounded-md bg-electric px-4 py-2 text-sm font-semibold text-black shadow-sm shadow-electric/20">
+        <Link href={`/${locale}/dashboard/newsroom-tool`} className="inline-flex items-center gap-2 rounded-md bg-electric px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-electric/25 transition hover:-translate-y-0.5 hover:bg-verified">
           <FileText className="h-4 w-4" aria-hidden />
           {t.openNewsroom}
         </Link>
@@ -36,25 +36,25 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           [t.highConfidence, stories.filter((s) => s.verification_status === "high_confidence").length],
           [t.monitoring, stories.filter((s) => s.verification_status === "monitoring").length]
         ].map(([label, value]) => (
-          <div key={String(label)} className="rounded-md border border-line bg-panel p-5 shadow-sm shadow-black/20">
-            <p className="text-sm text-slate-400">{label}</p>
-            <p className="mt-3 text-3xl font-semibold text-white">{value}</p>
+          <div key={String(label)} className="rounded-md border border-line bg-panel p-5 shadow-sm shadow-slate-200">
+            <p className="text-sm text-slate-600">{label}</p>
+            <p className="mt-3 text-3xl font-semibold text-slate-950">{value}</p>
           </div>
         ))}
       </div>
-      <div className="mt-6 overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-black/20">
+      <div className="mt-6 overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-slate-200">
         <div className="flex items-center gap-2 border-b border-line p-4">
           <RadioTower className="h-5 w-5 text-electric" aria-hidden />
-          <h2 className="font-semibold text-white">{t.latestStories}</h2>
+          <h2 className="font-semibold text-slate-950">{t.latestStories}</h2>
         </div>
         <div className="divide-y divide-line">
           {stories.map((story) => (
-            <Link key={story.id} href={`/${locale}/dashboard/story/${story.id}`} className="block p-4 transition hover:bg-white/5">
+            <Link key={story.id} href={`/${locale}/dashboard/story/${story.id}`} className="block p-4 transition hover:bg-navy">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="font-medium text-white">{story.main_title}</h3>
+                <h3 className="font-medium text-slate-950">{story.main_title}</h3>
                 <StatusBadge status={story.verification_status} locale={locale} />
               </div>
-              <p className="mt-2 text-sm text-slate-400">{story.verification_reason} · {t.sourcesCount}: {story.source_count ?? 0}</p>
+              <p className="mt-2 text-sm text-slate-600">{story.verification_reason} - {t.sourcesCount}: {story.source_count ?? 0}</p>
             </Link>
           ))}
         </div>

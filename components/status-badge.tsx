@@ -2,9 +2,9 @@ import type { VerificationStatus } from "@/types/app";
 import type { Locale } from "@/types/app";
 
 const styles: Record<VerificationStatus, string> = {
-  unverified: "border-slate-600 bg-slate-900/60 text-slate-300",
+  unverified: "border-slate-300 bg-slate-50 text-slate-600",
   monitoring: "border-electric/50 bg-electric/10 text-electric",
-  likely: "border-yellow-500/50 bg-yellow-500/10 text-yellow-200",
+  likely: "border-yellow-500/50 bg-yellow-500/10 text-yellow-700",
   confirmed: "border-verified/50 bg-verified/10 text-verified",
   high_confidence: "border-verified bg-verified/15 text-verified"
 };

@@ -67,4 +67,7 @@
   ,"createdAt": "وقت الإنشاء"
   ,"entityType": "نوع العنصر"
   ,"entityId": "معرف العنصر"
+  ,"openChatgptRoom": "فتح غرفة ChatGPT"
+  ,"chatgptRoomTitle": "غرفة ChatGPT"
+  ,"chatgptRoomNote": "استخدم غرفة ChatGPT المرتبطة كمساحة التحرير الأساسية، مع إبقاء الحقول أدناه كصياغة مساعدة داخل رصد."
 }

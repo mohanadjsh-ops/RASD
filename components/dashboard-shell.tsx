@@ -22,9 +22,9 @@ export async function DashboardShell({ children, locale }: { children: React.Rea
   ];
 
   return (
-    <div className="min-h-screen bg-navy text-slate-100">
-      <aside className="fixed inset-y-0 hidden w-72 border-e border-line bg-panel/95 p-4 shadow-2xl shadow-black/25 lg:block">
-        <div className="rounded-md border border-line bg-black/20 p-3">
+    <div className="min-h-screen bg-navy text-slate-900">
+      <aside className="fixed inset-y-0 hidden w-72 border-e border-line bg-panel/95 p-4 shadow-xl shadow-slate-200/80 lg:block">
+        <div className="rounded-md border border-line bg-navy p-3">
           <RasdLogo label={t.brand} />
         </div>
         <nav className="mt-6 space-y-1">
@@ -35,25 +35,28 @@ export async function DashboardShell({ children, locale }: { children: React.Rea
                 key={item.href}
                 href={item.href}
                 className={[
-                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition",
+                  "group relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition hover:-translate-y-0.5",
                   active
-                    ? "border border-electric/40 bg-electric/15 text-white shadow-sm shadow-electric/10"
-                    : "text-slate-300 hover:bg-white/5 hover:text-white"
+                    ? "border border-electric/40 bg-electric/10 text-slate-950 shadow-sm shadow-electric/10"
+                    : "text-slate-600 hover:bg-navy hover:text-slate-950"
                 ].join(" ")}
               >
-                <item.icon className={active ? "h-4 w-4 text-electric" : "h-4 w-4 text-slate-500"} aria-hidden />
-                <span className="truncate">{item.label}</span>
+                {active ? <span className="absolute inset-y-2 start-0 w-1 rounded-full bg-electric" /> : null}
+                <span className={active ? "interactive-icon grid h-8 w-8 place-items-center rounded-md bg-electric text-white" : "interactive-icon grid h-8 w-8 place-items-center rounded-md border border-line bg-white text-slate-500 group-hover:border-electric group-hover:text-electric"}>
+                  <item.icon className="h-4 w-4" aria-hidden />
+                </span>
+                <span className="truncate font-medium">{item.label}</span>
               </Link>
             );
           })}
         </nav>
       </aside>
       <div className="lg:ps-72">
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-navy/85 px-4 py-3 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-white/85 px-4 py-3 shadow-sm shadow-slate-200/50 backdrop-blur lg:px-8">
           <div className="lg:hidden">
             <RasdLogo label={t.brand} />
           </div>
-          <div className="hidden items-center gap-2 text-sm text-slate-300 lg:flex">
+          <div className="hidden items-center gap-2 text-sm font-medium text-slate-600 lg:flex">
             <ShieldCheck className="h-4 w-4 text-electric" aria-hidden />
             {t.headerStatus}
           </div>

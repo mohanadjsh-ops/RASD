@@ -51,45 +51,45 @@ export function UsersAdmin({ labels }: { labels: Record<string, string> }) {
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold text-white">{labels.users}</h1>
+      <h1 className="text-2xl font-semibold text-slate-950">{labels.users}</h1>
       <div className="mt-5 grid gap-5 lg:grid-cols-[360px_1fr]">
-        <form action={createUser} className="rounded-md border border-line bg-panel p-5 shadow-sm shadow-black/20">
-          <label className="block text-sm text-slate-300">
+        <form action={createUser} className="rounded-md border border-line bg-panel p-5 shadow-sm shadow-slate-200">
+          <label className="block text-sm font-medium text-slate-700">
             {labels.fullName}
-            <input name="fullName" required className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" />
+            <input name="fullName" required className="mt-2 w-full rounded-md border border-line bg-white px-3 py-2 text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" />
           </label>
-          <label className="mt-4 block text-sm text-slate-300">
+          <label className="mt-4 block text-sm font-medium text-slate-700">
             {labels.email}
-            <input name="email" type="email" required className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" />
+            <input name="email" type="email" required className="mt-2 w-full rounded-md border border-line bg-white px-3 py-2 text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" />
           </label>
-          <label className="mt-4 block text-sm text-slate-300">
+          <label className="mt-4 block text-sm font-medium text-slate-700">
             {labels.password}
-            <input name="password" type="password" required className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric" />
+            <input name="password" type="password" required className="mt-2 w-full rounded-md border border-line bg-white px-3 py-2 text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric" />
           </label>
-          <label className="mt-4 block text-sm text-slate-300">
+          <label className="mt-4 block text-sm font-medium text-slate-700">
             {labels.role}
-            <select name="role" className="mt-2 w-full rounded-md border border-line bg-black/20 px-3 py-2 text-white outline-none transition focus:border-electric">
+            <select name="role" className="mt-2 w-full rounded-md border border-line bg-white px-3 py-2 text-slate-950 shadow-sm outline-none transition hover:border-electric/60 focus:border-electric">
               <option value="viewer">viewer</option>
               <option value="admin">admin</option>
             </select>
           </label>
-          <button disabled={pending} className="mt-5 rounded-md bg-electric px-4 py-2 font-semibold text-black shadow-sm shadow-electric/20 disabled:opacity-50">
+          <button disabled={pending} className="mt-5 rounded-md bg-electric px-4 py-2 font-semibold text-white shadow-lg shadow-electric/25 transition hover:-translate-y-0.5 hover:bg-verified disabled:opacity-50">
             {labels.createUser}
           </button>
-          {message ? <p className="mt-3 text-sm text-slate-300">{message}</p> : null}
+          {message ? <p className="mt-3 text-sm text-slate-600">{message}</p> : null}
         </form>
-        <div className="overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-black/20">
+        <div className="overflow-hidden rounded-md border border-line bg-panel shadow-sm shadow-slate-200">
           {users.length ? (
             users.map((user) => (
               <div key={user.id} className="grid gap-2 border-b border-line p-4 text-sm last:border-0 md:grid-cols-4">
-                <span className="text-white">{user.profile?.full_name ?? "-"}</span>
+                <span className="font-medium text-slate-950">{user.profile?.full_name ?? "-"}</span>
                 <span>{user.email}</span>
                 <span>{user.profile?.role ?? "viewer"}</span>
                 <span>{new Date(user.created_at).toLocaleString()}</span>
               </div>
             ))
           ) : (
-            <p className="p-6 text-slate-400">{labels.empty}</p>
+            <p className="p-6 text-slate-500">{labels.empty}</p>
           )}
         </div>
       </div>
