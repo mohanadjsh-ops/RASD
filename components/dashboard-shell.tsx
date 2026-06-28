@@ -28,6 +28,7 @@ export async function DashboardShell({ children, locale }: { children: React.Rea
     { href: `/${locale}/dashboard/breaking-news`, label: t.breakingNews, icon: "radio" as const },
     { href: `/${locale}/dashboard/sources`, label: t.sources, icon: "newspaper" as const },
     { href: `/${locale}/dashboard/newsroom-tool`, label: t.newsroomTool, icon: "file" as const },
+    { href: `/${locale}/dashboard/osint`, label: t.osintLab, icon: "scan" as const },
     { href: `/${locale}/dashboard/alerts`, label: t.alerts, icon: "bell" as const },
     { href: `/${locale}/dashboard/users`, label: t.users, icon: "users" as const },
     { href: `/${locale}/dashboard/settings`, label: t.settings, icon: "settings" as const },

@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
-import { createSupabaseServiceClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function GET() {
   await requireUser("ar");
-  const supabase = createSupabaseServiceClient();
+  const supabase = await createSupabaseServerClient();
   const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
   const { data, error } = await supabase
     .from("alerts")

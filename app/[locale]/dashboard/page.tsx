@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText, RadioTower } from "lucide-react";
+import { FileSearch, FileText, RadioTower } from "lucide-react";
 import { getMessages, isLocale } from "@/lib/i18n";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { demoStories } from "@/lib/demo-data";
@@ -33,6 +33,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         <Link href={`/${locale}/dashboard/newsroom-tool`} className="inline-flex items-center gap-2 rounded-md bg-electric px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-electric/25 transition hover:-translate-y-0.5 hover:bg-verified">
           <FileText className="h-4 w-4" aria-hidden />
           {t.openNewsroom}
+        </Link>
+        <Link href={`/${locale}/dashboard/osint`} className="inline-flex items-center gap-2 rounded-md border border-electric bg-white px-4 py-2 text-sm font-semibold text-verified transition hover:-translate-y-0.5 hover:bg-green-50">
+          <FileSearch className="h-4 w-4" aria-hidden />
+          {t.osintLab}
         </Link>
       </div>
       <div className="mt-6 grid gap-4 md:grid-cols-3">

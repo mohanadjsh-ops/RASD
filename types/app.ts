@@ -70,3 +70,117 @@ export type LiveStory = {
   lastSeenAt: string;
   imageUrl: string | null;
 };
+
+export type OsintStage =
+  | "planning"
+  | "preservation"
+  | "source"
+  | "content"
+  | "geotime"
+  | "specialist"
+  | "review"
+  | "approval";
+
+export type OsintVerdict =
+  | "inconclusive"
+  | "needs_evidence"
+  | "likely"
+  | "verified"
+  | "misleading";
+
+export type OsintCase = {
+  id: string;
+  title: string;
+  description: string | null;
+  input_type: "image" | "video" | "url" | "text" | "mixed";
+  workflow_stage: OsintStage;
+  verdict: OsintVerdict;
+  confidence_score: number;
+  sensitive_material: boolean;
+  public_interest_reason: string | null;
+  limitations: string | null;
+  ai_enabled: boolean;
+  created_by: string | null;
+  approved_by: string | null;
+  approved_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type OsintClaim = {
+  id: string;
+  case_id: string;
+  claim_text: string;
+  claim_type: "primary" | "supporting" | "context";
+  status: "open" | "supported" | "contradicted" | "unresolved";
+  created_by: string | null;
+  created_at: string;
+};
+
+export type OsintEvidence = {
+  id: string;
+  case_id: string;
+  evidence_type: "image" | "video" | "frame" | "url" | "text" | "document" | "telegram_file";
+  title: string;
+  source_url: string | null;
+  original_filename: string | null;
+  mime_type: string | null;
+  file_size: number | null;
+  sha256: string | null;
+  metadata: Record<string, unknown>;
+  notes: string | null;
+  local_only: boolean;
+  telegram_object_path: string | null;
+  expires_at: string | null;
+  created_by: string | null;
+  created_at: string;
+};
+
+export type OsintFinding = {
+  id: string;
+  case_id: string;
+  evidence_id: string | null;
+  tool_id: string | null;
+  stage: OsintStage;
+  title: string;
+  body: string;
+  stance: "supporting" | "opposing" | "neutral";
+  confidence_score: number;
+  source_url: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type OsintCaseEvent = {
+  id: string;
+  case_id: string;
+  action: string;
+  description: string;
+  metadata: Record<string, unknown>;
+  created_by: string | null;
+  created_at: string;
+};
+
+export type OsintTool = {
+  id: string;
+  name: string;
+  category: string;
+  url: string;
+  execution_mode: "automatic" | "manual";
+  access_model: "free" | "account_required";
+  instructions_ar: string;
+  enabled: boolean;
+  last_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type OsintCaseBundle = {
+  case: OsintCase;
+  claims: OsintClaim[];
+  evidence: OsintEvidence[];
+  findings: OsintFinding[];
+  events: OsintCaseEvent[];
+  tools: OsintTool[];
+};

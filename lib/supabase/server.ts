@@ -27,7 +27,7 @@ export async function createSupabaseServerClient() {
 export function createSupabaseServiceClient() {
   return createClient(
     clientEnv.NEXT_PUBLIC_SUPABASE_URL ?? "https://example.supabase.co",
-    serverEnv.SUPABASE_SERVICE_ROLE_KEY ?? "missing-service-role-key",
+    serverEnv.SUPABASE_SERVICE_ROLE_KEY || serverEnv.SUPABASE_SECRET_KEY || "missing-service-role-key",
     {
       auth: { persistSession: false }
     }

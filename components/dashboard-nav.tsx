@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, FileText, Gauge, ListChecks, Newspaper, RadioTower, Settings, Users } from "lucide-react";
+import { Bell, FileText, Gauge, ListChecks, Newspaper, RadioTower, ScanSearch, Settings, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const iconMap = {
@@ -12,7 +12,8 @@ const iconMap = {
   bell: Bell,
   users: Users,
   settings: Settings,
-  list: ListChecks
+  list: ListChecks,
+  scan: ScanSearch
 };
 
 type NavItem = {

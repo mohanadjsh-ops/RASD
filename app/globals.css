@@ -71,3 +71,33 @@ select {
 .live-dot {
   animation: live-dot 1.15s ease-in-out infinite;
 }
+
+@media print {
+  aside,
+  header,
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body,
+  main {
+    background: #ffffff !important;
+    color: #111827 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .osint-workbench {
+    width: 100% !important;
+  }
+
+  .osint-print-report {
+    display: block !important;
+  }
+
+  .osint-report {
+    max-width: none !important;
+    padding: 12mm !important;
+  }
+}
